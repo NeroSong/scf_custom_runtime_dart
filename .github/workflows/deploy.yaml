@@ -1,0 +1,29 @@
+name: build & deploy to SCF
+
+on:
+  push:
+    branches:
+      - deploy # 在deploy分支上push触发部署
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 安装 dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+          cache: true
+
+      - name: 安装 py3
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - run: dart pub get
+      - run: pip install tencentcloud-sdk-python
+
+      - name: 执行打包上传
+        run: bash deploy/deploy.sh

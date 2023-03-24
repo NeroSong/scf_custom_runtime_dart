@@ -1,0 +1,10 @@
+#!/bin/sh
+echo "Start bootstrap" 
+
+# Info custom runtime ready
+curl -d " " -X POST -s "http://$SCF_RUNTIME_API:$SCF_RUNTIME_API_PORT/runtime/init/ready"
+echo "CR ready"
+
+export PATH=$(pwd):${PATH}
+./handler
+echo "Cold start done" 
